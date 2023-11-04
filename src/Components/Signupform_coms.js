@@ -1,0 +1,243 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import Swal from 'sweetalert2'
+import { UserIcon, LockClosedIcon, IdentificationIcon, HomeIcon, PhoneIcon, ArrowLeftIcon} from '@heroicons/react/24/solid'
+
+
+const apiUrl = 'http://localhost:3001/api/createUser'; 
+
+const SignupForm = () => {
+  const [name, setName] = useState('');
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [telephone, setTelephone] = useState('');
+
+const data_body = {
+  Name: name,
+  Username: user,
+  Password: password,
+  confirmpassword: confirmPassword,
+  Address: address,
+  Tel: telephone,
+}
+const createUser = async () => {
+  try {
+    const response = await axios.post(apiUrl, data_body);
+    console.log('API Response:', response.data);
+    if (password !== '' && confirmPassword !== '') {
+      if (password == confirmPassword) {
+          Swal.fire({
+            position: 'mid',
+            icon: 'success',
+            title: 'Signup complete',
+            showConfirmButton: false,
+            timer: 1000
+          })
+          setTimeout(() => {window.location.href = '/login';}, 1500);
+      } 
+    }
+  } catch (error) {
+    console.error('API Error:', error.response.data);
+    Swal.fire({
+      icon: 'error',
+      title: 'Signup failed.',
+      text: 'Password does not match',
+    })
+  }
+};
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  createUser();
+  
+};
+
+  return (
+    <>
+      <div className="relative overflow-hidden bg-gray-100 pb-20 pt-24 lg:pb-24 h-screen w-screen">
+        
+        <div className="mx-auto max-w-full lg:max-w-none ">
+          <div className="mx-auto lg:ml-[39.5rem] lg:items-center">
+            <div className="relative z-10 -mx-4 shadow-2xl ring-1 ring-slate-900/10 sm:mx-0 sm:rounded-3xl lg:w-1/2 lg:flex-none">
+              <div className="relative bg-white px-4  sm:rounded-3xl sm:px-10">
+                <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+                  
+                <button ><a href='/login'>
+                  <ArrowLeftIcon className="pointer-events: none  h-6 w-6 text-black"/>
+                  </a></button>
+                  <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
+                    <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                      Sign up 
+                    </h2>
+                  </div>
+
+                  <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                  <form className="space-y-5" onSubmit={handleSubmit}>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900 ">
+                        Name
+                      </label>
+                      <div className="relative mt-2">
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          autoComplete="name"
+                          placeholder="Enter a name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                          className="pl-9 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                        <div class="absolute inset-y-0 left-0 pl-3  
+                          flex items-center pointer-events-none 
+                          "> 
+                          <IdentificationIcon className=" h-5 w-5 text-black"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                <label htmlFor="user" className="block text-sm font-medium leading-6 text-gray-900 ">
+                  Username
+                </label>
+                <div className="relative mt-2">
+                  <input
+                    id="user"
+                    name="user"
+                    type="text"
+                    placeholder="Enter a username"
+                    autoComplete="user"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
+                    required
+                    className="pl-9 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                    <div class="absolute inset-y-0 left-0 pl-3  
+                          flex items-center pointer-events-none 
+                          "> 
+                          <UserIcon className=" h-5 w-5 text-black"/>
+                    </div>
+                </div>
+              </div>
+
+
+
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900 ">
+                        Password
+                      </label>
+                      <div className="relative mt-2">
+                        <input
+                          id="password"
+                          name="password"
+                          type="text"
+                          placeholder="Enter a password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          className="pl-9 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                        <div class="absolute inset-y-0 left-0 pl-3  
+                          flex items-center pointer-events-none 
+                          "> 
+                          <LockClosedIcon className=" h-5 w-5 text-black"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+              <label htmlFor="confirmpassword" className="block text-sm font-medium leading-6 text-gray-900 ">
+                Confirm Password
+              </label>
+              <div className="relative mt-2">
+                <input
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  type="text"
+                  placeholder="Enter a password again"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="pl-9 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                  <div class="absolute inset-y-0 left-0 pl-3  
+                          flex items-center pointer-events-none 
+                          "> 
+                        <LockClosedIcon className=" h-5 w-5 text-black"/>
+                  </div>
+              </div>
+            </div>
+
+
+            <div>
+              <label htmlFor="Name" className="block text-sm font-medium leading-6 text-gray-900 ">
+              Address
+              </label>
+              <div className="relative mt-2">
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  placeholder="Enter your address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                  className="pl-9 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                 <div class="absolute inset-y-0 left-0 pl-3  
+                          flex items-center pointer-events-none 
+                          "> 
+                  <HomeIcon className=" h-5 w-5 text-black"/>
+                  </div>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="Name" className="block text-sm font-medium leading-6 text-gray-900 ">
+              Telephone
+              </label>
+              <div className="relative mt-2">
+                <input
+                  id="Telephone"
+                  name="Telephone"
+                  type="tel"
+                  placeholder="Enter your number"
+                  value={telephone}
+                  onChange={(e) => setTelephone(e.target.value)}
+                  required
+                  className="pl-9 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                <div class="absolute inset-y-0 left-0 pl-3  
+                          flex items-center pointer-events-none 
+                          "> 
+                  <PhoneIcon className=" h-5 w-5 text-black"/>
+                  </div>
+              </div>
+            </div>
+
+            <div>
+                    <button
+                      type="submit"
+                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Sign in
+                    </button>
+                  </div>
+
+                  </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default SignupForm;
